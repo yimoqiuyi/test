@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yp.mapper.CommontMapper">
+<resultMap type="commont" id="selectAllcommont">
+<id property="id" column="id"/>
+<result property="context" column="context"/>
+<result property="commontid" column="commontid"/>
+<result property="userid" column="userid"/>
+<result property="mesid" column="mesid"/>
+ <collection property="recomList" column="id" select="com.yp.mapper.RecommontMapper.selectCommontByCoId"></collection>
+</resultMap>
+ <select id="selectComByMesId" parameterType="int" resultMap="selectAllcommont">
+select * from commont c where mesid=#{id}
+</select>
+
+<insert id="insertCommont" parameterType="commont">
+insert into commont(context,commontid,userid,mesid) values (#{context},#{commontid},#{userid},#{mesid})
+</insert>
+<!-- 根据文章id获得所有一级评价 -->
+<select id="selectAllByMeId" parameterType="int" resultMap="selectAllcommont">
+select * from commont where mesid=#{id}
+</select>
+<select id="selectOneComont" parameterType="int" resultType="commont">
+select * from commont where id=#{id}
+</select>
+</mapper>

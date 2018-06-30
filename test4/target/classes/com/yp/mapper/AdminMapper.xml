@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yp.mapper.AdminMapper">
+ <resultMap type="admin" id="selectAll">
+  <id column="id" property="id"/>
+  <result column="name" property="name"/>
+  <result column="password" property="password"/>
+  <result column="picture" property="picture"/>
+ </resultMap>
+ <select id="selectAllAdmin" resultMap="selectAll">
+ select * from admin
+ </select>
+ <insert id="insertAdmin" parameterType="admin">
+ insert into admin(name,password,picture) values(#{name},#{password},#{picture})
+ </insert>
+ <select id="selectOneAdmin" parameterType="int" resultType="admin">
+ select * from admin where id=#{id}
+ </select>
+ </mapper>

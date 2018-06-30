@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yp.mapper.MessageMapper">
+<resultMap type="message" id="selectAllmessage">
+<id property="id" column="id"/>
+<result property="context" column="context"/>
+<result property="title" column="title"/>
+ <result property="date" column="date"/>
+ <result property="note" column="note"/>
+ <result property="typeId" column="type_id"/>
+ <collection property="typelist" column="id" select="com.yp.mapper.TypeMapper.selectTypeByMessageId"
+ fetchType="lazy" />
+ <collection property="comList" column="id" select="com.yp.mapper.CommontMapper.selectComByMesId"></collection>
+ </resultMap>
+ 
+<select id="selectAllMessage" resultMap="selectAllmessage">
+select * from message  
+</select>
+<select id="selectOneMessage" parameterType="int" resultType="message">
+select * from message where id=#{id}
+</select>
+<update id="updateMessage">
+update message set 
+context=#{param.context},
+title=#{param.title},
+note=#{param.note},
+date=#{param.date},
+state=#{param.state}
+where id=#{id}
+</update>
+<insert id="insertMessage" >
+insert into message(context,title,date,note,type_id,state,userId) values 
+(#{param.context}, #{param.title}, #{param.date}, #{param.note}, #{param.typeId}, #{param.state},#{Id})
+ </insert>
+ <delete id="deleteMessage" parameterType="int">
+ delete from message where id=#{id}
+ </delete>
+ <select id="selectAllMessageByUserId" parameterType="int" resultMap="selectAllmessage">
+ select * from message where userId=#{id} and state="1"
+ </select>
+  <select id="selectMessageByTypeId" parameterType="int" resultMap="selectAllmessage">
+ select * from message m,message_type mt where m.id=mt.messageId and m.typeId=#{id}
+ </select>
+ <select id="selectMessageByname" parameterType="string" resultMap="selectAllmessage">
+ select * from message 
+ where title like concat ('%',#{title},'%') and state="0"
+     </select>
+     <select id="selectMessageByState" parameterType="string" resultMap="selectAllmessage">
+     select * from message where state=#{state}
+     </select>
+     <select id="selectOneMessageByState" resultMap="selectAllmessage">
+     select * from message where userId=#{userid} and state=#{state}
+     </select>
+</mapper>

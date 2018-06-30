@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yp.mapper.UserMapper">
+<resultMap type="user" id="selectAlluser">
+<id column="id" property="id"/>
+<result column="name" property="name"/>
+<result column="password" property="password"/>
+<result column="picture" property="picture"/>
+<result column="note" property="note"/>
+<collection property="MessageList" column="id" fetchType="lazy" select="com.yp.mapper.MessageMapper.selectOneMessage"></collection>
+ </resultMap>
+<select id="selectAllUser" resultMap="selectAlluser">
+select * from user
+</select>
+<insert id="addUser" parameterType="user">
+insert into user(name,password,picture,note) values(#{name},#{password},#{picture},#{note})
+</insert>
+ <delete id="deleteUser" parameterType="int">
+delete * from user where id=#{id}
+</delete>
+<select id="selectUserById" parameterType="int" resultType="user">
+select * from user where id=#{id}
+</select>
+<update id="updateUser" >
+update user set name=#{user.name}, password=#{user.password}, note=#{user.note}, picture=#{user.picture} where id=#{id}
+</update>
+<select id="find" parameterType="string" resultType="user">
+select * from user where name=#{name}
+</select>
+ </mapper>
